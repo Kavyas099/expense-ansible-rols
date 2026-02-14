@@ -52,3 +52,11 @@
       user: "{{ MYSQL_USER }}"
       host: "{{ MYSQL_HOST }}"
 
+
+- name: Try connecting with root password
+  community.mysql.mysql_info:
+    login_user: root
+    login_password: "{{ MYSQL_ROOT_PASSWORD }}"
+    login_host: localhost
+  register: mysql_login
+  ignore_errors: yes

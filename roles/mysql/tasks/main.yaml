@@ -1,16 +1,11 @@
-- name: Ensure python3-pip is installed
-  ansible.builtin.package:
-    name: python3-pip
-    state: present
 
-- name: Install required Python libraries
+- name: Install MySQL libraries
   ansible.builtin.pip:
-    name:
-      - cryptography
-      - PyMySQL
-      - boto3
-      - botocore
-    executable: pip3
+    name: "{{ item }}"
+    executable: pip3.9
+  loop:
+  - cryptography
+  - PyMySQL
 
 - name: Install MySQL server
   ansible.builtin.package:
@@ -35,28 +30,6 @@
   ansible.builtin.debug:
     msg: "MySQL info: {{ mysql_info }}"
 
-- debug:
-    var: mysql_info.users
-- name: Ensure root password is set
-  community.mysql.mysql_user:
-    name: root
-    host: localhost
-    password: "{{ lookup('amazon.aws.aws_ssm', '/expense/mysql/mysql_root_password', decrypt=True) }}"
-    login_unix_socket: /var/lib/mysql/mysql.sock
-    check_implicit_admin: yes
-    state: present
-
-- name: Debug MySQL variables
-  debug:
-    msg:
-      user: "{{ MYSQL_USER }}"
-      host: "{{ MYSQL_HOST }}"
-
-
-- name: Try connecting with root password
-  community.mysql.mysql_info:
-    login_user: root
-    login_password: "{{ MYSQL_ROOT_PASSWORD }}"
-    login_host: localhost
-  register: mysql_login
-  ignore_errors: yes
+- name: setup root password
+  ansible.builtin.command: " mysql_secure_installation --set-root-pass {{ lookup('amazon.aws.aws_ssm', '/expense/mysql/mysql_root_password', decrypt=True ) }} "
+  when: mysql_info.failed is true

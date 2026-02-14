@@ -45,3 +45,10 @@
     login_unix_socket: /var/lib/mysql/mysql.sock
     check_implicit_admin: yes
     state: present
+
+- name: Debug MySQL variables
+  debug:
+    msg:
+      user: "{{ MYSQL_USER }}"
+      host: "{{ MYSQL_HOST }}"
+

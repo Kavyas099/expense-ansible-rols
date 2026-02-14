@@ -37,8 +37,7 @@
 
 - debug:
     var: mysql_info.users
-
-- name: Set root password properly
+- name: Ensure root password is set
   community.mysql.mysql_user:
     name: root
     host: localhost
@@ -46,7 +45,3 @@
     login_unix_socket: /var/lib/mysql/mysql.sock
     check_implicit_admin: yes
     state: present
-  when: mysql_info.users.root.hosts.localhost.authentication_string == ""
-  
-
-  

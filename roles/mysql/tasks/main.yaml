@@ -35,7 +35,9 @@
   ansible.builtin.debug:
     msg: "MySQL info: {{ mysql_info }}"
 
-    
+- debug:
+    var: mysql_info.users
+
 - name: Set root password properly
   community.mysql.mysql_user:
     name: root
@@ -45,3 +47,6 @@
     check_implicit_admin: yes
     state: present
   when: mysql_info.users.root.hosts.localhost.authentication_string == ""
+  
+
+  

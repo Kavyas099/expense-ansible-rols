@@ -5,9 +5,7 @@
   loop:
   - cryptography
   - PyMySQL
-  - boto3
-  - botocore
-
+ 
 - name: Install MySQL server
   ansible.builtin.package:
     name: mysql-server

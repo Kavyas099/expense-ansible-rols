@@ -17,3 +17,11 @@
     state: started
     enabled: yes
 
+
+- name: connect to mysql server
+  community.mysql.mysql_info:
+    login_user: root
+    login_password: "{{ lookup('amazon.aws.aws_ssm', '/expense/mysql', decrypt=True ) }}"
+    login_host: "{{ mysql_host }}"
+  register: mysql_info
+  ignore_errors: true

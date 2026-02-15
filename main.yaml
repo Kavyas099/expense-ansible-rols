@@ -1,3 +1,7 @@
-- name: configure mysql server
-  hosts: mysql
+- name: "configuring {{ COMPONENT }} server"
+  hosts: all
   become: yes
+  # vars_files:
+  # - "variables-{{ ENVIRONMENT }}.yaml"
+  roles:
+  - "{{ COMPONENT }}"
